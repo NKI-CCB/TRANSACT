@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="transact",
+    name="transact_dr",
     version="1.0.1",
     author="Soufiane Mourragui <soufiane.mourragui@gmail.com>, ",
     author_email="soufiane.mourragui@gmail.com",
