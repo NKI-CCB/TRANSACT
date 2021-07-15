@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>transact.interpolation API documentation</title>
+<meta name="description" content="Interpolation …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>transact.interpolation</code></h1>
+</header>
+<section id="section-intro">
+<p>Interpolation</p>
+<p>@author: Soufiane Mourragui</p>
+<h2 id="example">Example</h2>
+<h2 id="notes">Notes</h2>
+<h2 id="references">References</h2>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34; Interpolation
+
+@author: Soufiane Mourragui
+
+Example
+-------
+    
+Notes
+-------
+
+References
+-------
+
+&#34;&#34;&#34;
+
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from sklearn.metrics.pairwise import kernel_metrics
+from sklearn.decomposition import KernelPCA
+from sklearn.metrics.pairwise import pairwise_kernels, kernel_metrics
+
+from transact.matrix_operations import _sqrt_matrix, _center_kernel, centering_matrix
+from transact.pv_computation import PVComputation
+from transact.kernel_computer import KernelComputer
+
+
+
+class Interpolation:
+
+    def __init__(self, kernel, kernel_params={}):
+
+        self.kernel = kernel
+        self.kernel_ = kernel_metrics()[kernel]
+        self.kernel_params_ = kernel_params
+
+        self._principal_vectors = None
+        self.kernel_values_ = KernelComputer(self.kernel, self.kernel_params_)
+
+    def fit(self,
+            principal_vectors,
+            kernel_values,
+            n_pv=None):
+
+        # Feed values to the interpolation scheme
+        self._principal_vectors = principal_vectors
+        self.kernel_values_ = kernel_values
+
+        self.n_pv = n_pv or (self._principal_vectors.n_pv or min(self._principal_vectors.n_components.values()))
+
+        self._compute_coef_matrix()
+
+        return self
+
+    def project_data(self, tau, source_only=False, target_only=False, center=True):
+        &#34;&#34;&#34;
+        Compute the source and/or target data projected on the interpolated path at time
+        tau.
+
+        Parameters
+        -------
+
+        Returned Values
+        -------
+
+        &#34;&#34;&#34;
+
+        if type(tau) == int or type(tau) == float:
+            tau = [tau]*self.n_pv
+        tau = np.array(tau)
+
+        sample_coef_matrix = self.pv_matrix_
+        if center:
+            sample_coef_matrix = self.centering_matrix_.dot(sample_coef_matrix)
+
+        if source_only:
+            return sample_coef_matrix[:self.n_source_samples].dot(self._angular_interpolation_matrix(tau))
+        elif target_only:
+            return sample_coef_matrix[self.n_source_samples:].dot(self._angular_interpolation_matrix(tau))
+        else:
+            return sample_coef_matrix.dot(self._angular_interpolation_matrix(tau))
+
+
+    def transform(self, X, tau, center=True):
+        
+        if type(tau) == int or type(tau) == float:
+            tau = [tau]*self.n_pv
+        tau = np.array(tau)
+        
+        K = self.kernel_values_.transform(X, center=center, right_center=True)
+        return K.dot(self.coef_matrix_).dot(self._angular_interpolation_matrix(tau))
+
+
+    def _angular_interpolation_matrix(self, tau):
+        assert tau.shape == (self.n_pv,)
+
+        return np.block([[np.diag(self._gamma_interpolations(tau))],
+                        [np.diag(self._xi_interpolations(tau))]])
+
+
+    def _gamma_interpolations(self, tau):
+        num = np.sin((1-tau)*self._principal_vectors.canonical_angles)
+        den = np.sin(self._principal_vectors.canonical_angles)
+        return num / den
+
+
+    def _xi_interpolations(self, tau):
+        num = np.sin(tau*(self._principal_vectors.canonical_angles))
+        den = np.sin(self._principal_vectors.canonical_angles)
+        return num / den
+
+
+    def _compute_coef_matrix(self):
+        &#34;&#34;&#34;
+        Compute different matrices of used later:
+        - kernel_matrix_: kernel values between source and target data (stacked).
+        - centering_matrix_: global centering matrix.
+        - coef_matrix_: coefficients for source and target principal components
+        - pv_matrix_: source and target principal vectors coefficients later used for interpolation.
+        &#34;&#34;&#34;
+        gamma_source = self._principal_vectors.gamma_coef[&#39;source&#39;]
+        gamma_target = self._principal_vectors.gamma_coef[&#39;target&#39;]
+        self.n_source_samples = gamma_source.shape[1]
+        self.n_target_samples = gamma_target.shape[1]
+
+        self.kernel_matrix_ = np.block([
+            [
+                self.kernel_values_.k_s,
+                self.kernel_values_.k_st
+            ],
+            [
+                self.kernel_values_.k_ts,
+                self.kernel_values_.k_t
+            ]
+        ])
+
+        self.centering_matrix_ = np.block([
+            [
+                centering_matrix(self.n_source_samples),
+                np.zeros((self.n_source_samples, self.n_target_samples))
+            ],
+            [
+                np.zeros((self.n_target_samples, self.n_source_samples)),
+                centering_matrix(self.n_target_samples)
+            ]
+        ])
+
+        self.coef_matrix_ =  np.block([
+            [
+                gamma_source.T[:,:self.n_pv],
+                np.zeros((self.n_source_samples, self.n_pv))
+            ],
+            [
+                np.zeros((self.n_target_samples, self.n_pv)),
+                gamma_target.T[:,:self.n_pv]
+            ]
+        ])
+
+        self.pv_matrix_ = self.kernel_matrix_.dot(self.centering_matrix_).dot(self.coef_matrix_)
+
+    @property
+    def principal_vectors(self):
+        return self._principal_vectors
+
+    @principal_vectors.setter
+    def principal_vectors(self, pv):
+        self._principal_vectors = pv
+
+        if not self.is_pv_fitted_:
+            self._compute_coef_matrix
+        self.is_pv_fitted_ = True</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="transact.interpolation.Interpolation"><code class="flex name class">
+<span>class <span class="ident">Interpolation</span></span>
+<span>(</span><span>kernel, kernel_params={})</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Interpolation:
+
+    def __init__(self, kernel, kernel_params={}):
+
+        self.kernel = kernel
+        self.kernel_ = kernel_metrics()[kernel]
+        self.kernel_params_ = kernel_params
+
+        self._principal_vectors = None
+        self.kernel_values_ = KernelComputer(self.kernel, self.kernel_params_)
+
+    def fit(self,
+            principal_vectors,
+            kernel_values,
+            n_pv=None):
+
+        # Feed values to the interpolation scheme
+        self._principal_vectors = principal_vectors
+        self.kernel_values_ = kernel_values
+
+        self.n_pv = n_pv or (self._principal_vectors.n_pv or min(self._principal_vectors.n_components.values()))
+
+        self._compute_coef_matrix()
+
+        return self
+
+    def project_data(self, tau, source_only=False, target_only=False, center=True):
+        &#34;&#34;&#34;
+        Compute the source and/or target data projected on the interpolated path at time
+        tau.
+
+        Parameters
+        -------
+
+        Returned Values
+        -------
+
+        &#34;&#34;&#34;
+
+        if type(tau) == int or type(tau) == float:
+            tau = [tau]*self.n_pv
+        tau = np.array(tau)
+
+        sample_coef_matrix = self.pv_matrix_
+        if center:
+            sample_coef_matrix = self.centering_matrix_.dot(sample_coef_matrix)
+
+        if source_only:
+            return sample_coef_matrix[:self.n_source_samples].dot(self._angular_interpolation_matrix(tau))
+        elif target_only:
+            return sample_coef_matrix[self.n_source_samples:].dot(self._angular_interpolation_matrix(tau))
+        else:
+            return sample_coef_matrix.dot(self._angular_interpolation_matrix(tau))
+
+
+    def transform(self, X, tau, center=True):
+        
+        if type(tau) == int or type(tau) == float:
+            tau = [tau]*self.n_pv
+        tau = np.array(tau)
+        
+        K = self.kernel_values_.transform(X, center=center, right_center=True)
+        return K.dot(self.coef_matrix_).dot(self._angular_interpolation_matrix(tau))
+
+
+    def _angular_interpolation_matrix(self, tau):
+        assert tau.shape == (self.n_pv,)
+
+        return np.block([[np.diag(self._gamma_interpolations(tau))],
+                        [np.diag(self._xi_interpolations(tau))]])
+
+
+    def _gamma_interpolations(self, tau):
+        num = np.sin((1-tau)*self._principal_vectors.canonical_angles)
+        den = np.sin(self._principal_vectors.canonical_angles)
+        return num / den
+
+
+    def _xi_interpolations(self, tau):
+        num = np.sin(tau*(self._principal_vectors.canonical_angles))
+        den = np.sin(self._principal_vectors.canonical_angles)
+        return num / den
+
+
+    def _compute_coef_matrix(self):
+        &#34;&#34;&#34;
+        Compute different matrices of used later:
+        - kernel_matrix_: kernel values between source and target data (stacked).
+        - centering_matrix_: global centering matrix.
+        - coef_matrix_: coefficients for source and target principal components
+        - pv_matrix_: source and target principal vectors coefficients later used for interpolation.
+        &#34;&#34;&#34;
+        gamma_source = self._principal_vectors.gamma_coef[&#39;source&#39;]
+        gamma_target = self._principal_vectors.gamma_coef[&#39;target&#39;]
+        self.n_source_samples = gamma_source.shape[1]
+        self.n_target_samples = gamma_target.shape[1]
+
+        self.kernel_matrix_ = np.block([
+            [
+                self.kernel_values_.k_s,
+                self.kernel_values_.k_st
+            ],
+            [
+                self.kernel_values_.k_ts,
+                self.kernel_values_.k_t
+            ]
+        ])
+
+        self.centering_matrix_ = np.block([
+            [
+                centering_matrix(self.n_source_samples),
+                np.zeros((self.n_source_samples, self.n_target_samples))
+            ],
+            [
+                np.zeros((self.n_target_samples, self.n_source_samples)),
+                centering_matrix(self.n_target_samples)
+            ]
+        ])
+
+        self.coef_matrix_ =  np.block([
+            [
+                gamma_source.T[:,:self.n_pv],
+                np.zeros((self.n_source_samples, self.n_pv))
+            ],
+            [
+                np.zeros((self.n_target_samples, self.n_pv)),
+                gamma_target.T[:,:self.n_pv]
+            ]
+        ])
+
+        self.pv_matrix_ = self.kernel_matrix_.dot(self.centering_matrix_).dot(self.coef_matrix_)
+
+    @property
+    def principal_vectors(self):
+        return self._principal_vectors
+
+    @principal_vectors.setter
+    def principal_vectors(self, pv):
+        self._principal_vectors = pv
+
+        if not self.is_pv_fitted_:
+            self._compute_coef_matrix
+        self.is_pv_fitted_ = True</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="transact.interpolation.Interpolation.principal_vectors"><code class="name">var <span class="ident">principal_vectors</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def principal_vectors(self):
+    return self._principal_vectors</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="transact.interpolation.Interpolation.fit"><code class="name flex">
+<span>def <span class="ident">fit</span></span>(<span>self, principal_vectors, kernel_values, n_pv=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fit(self,
+        principal_vectors,
+        kernel_values,
+        n_pv=None):
+
+    # Feed values to the interpolation scheme
+    self._principal_vectors = principal_vectors
+    self.kernel_values_ = kernel_values
+
+    self.n_pv = n_pv or (self._principal_vectors.n_pv or min(self._principal_vectors.n_components.values()))
+
+    self._compute_coef_matrix()
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="transact.interpolation.Interpolation.project_data"><code class="name flex">
+<span>def <span class="ident">project_data</span></span>(<span>self, tau, source_only=False, target_only=False, center=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the source and/or target data projected on the interpolated path at time
+tau.</p>
+<h2 id="parameters">Parameters</h2>
+<h2 id="returned-values">Returned Values</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def project_data(self, tau, source_only=False, target_only=False, center=True):
+    &#34;&#34;&#34;
+    Compute the source and/or target data projected on the interpolated path at time
+    tau.
+
+    Parameters
+    -------
+
+    Returned Values
+    -------
+
+    &#34;&#34;&#34;
+
+    if type(tau) == int or type(tau) == float:
+        tau = [tau]*self.n_pv
+    tau = np.array(tau)
+
+    sample_coef_matrix = self.pv_matrix_
+    if center:
+        sample_coef_matrix = self.centering_matrix_.dot(sample_coef_matrix)
+
+    if source_only:
+        return sample_coef_matrix[:self.n_source_samples].dot(self._angular_interpolation_matrix(tau))
+    elif target_only:
+        return sample_coef_matrix[self.n_source_samples:].dot(self._angular_interpolation_matrix(tau))
+    else:
+        return sample_coef_matrix.dot(self._angular_interpolation_matrix(tau))</code></pre>
+</details>
+</dd>
+<dt id="transact.interpolation.Interpolation.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, X, tau, center=True)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def transform(self, X, tau, center=True):
+    
+    if type(tau) == int or type(tau) == float:
+        tau = [tau]*self.n_pv
+    tau = np.array(tau)
+    
+    K = self.kernel_values_.transform(X, center=center, right_center=True)
+    return K.dot(self.coef_matrix_).dot(self._angular_interpolation_matrix(tau))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#example">Example</a></li>
+<li><a href="#notes">Notes</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="transact" href="index.html">transact</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="transact.interpolation.Interpolation" href="#transact.interpolation.Interpolation">Interpolation</a></code></h4>
+<ul class="">
+<li><code><a title="transact.interpolation.Interpolation.fit" href="#transact.interpolation.Interpolation.fit">fit</a></code></li>
+<li><code><a title="transact.interpolation.Interpolation.principal_vectors" href="#transact.interpolation.Interpolation.principal_vectors">principal_vectors</a></code></li>
+<li><code><a title="transact.interpolation.Interpolation.project_data" href="#transact.interpolation.Interpolation.project_data">project_data</a></code></li>
+<li><code><a title="transact.interpolation.Interpolation.transform" href="#transact.interpolation.Interpolation.transform">transform</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

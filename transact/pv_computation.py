@@ -1,6 +1,9 @@
-""" PVComputation
+""" PVComputation: non-linear dimensionality reduction by kernel PCA and alignment of resulting kernel PCs.
 
 @author: Soufiane Mourragui
+
+This
+
 
 Example
 -------

@@ -1,0 +1,6 @@
+WITH PDOC:
+pdoc --html transact/ --force
+
+WITH SPHINX (https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html)
+sphinx-quickstart (install stuffs)
+extensions = ['sphinx.ext.napoleon'] (add to conf.py)
