@@ -32,12 +32,40 @@ from transact.kernel_computer import KernelComputer
 
 class PVComputation:
     """
-
-    Attributes
-    -------
+    PVComputation handles the dimensionality reduction and alignment of learned manifold.
+    <br/><br/>
+    This class contains all the following tasks and sub-routines:
+    <ul>
+        <li> Kernel PCA decomposition on source and target independently.
+         <li> Kernel principal components comparison.
+         <li> Computation of Principal Vectors (PVs).
+    </ul>
     """
 
-    def __init__(self, kernel, kernel_params={}, n_components=None, n_pv=None):
+    def __init__(self, kernel, kernel_params={}, n_components=None, n_pv=None, n_jobs=1):
+        """
+        Parameters
+        ----------
+        kernel : str, default to 'linear'
+            Name of the kernel to be used in the algorithm. Has to be compliant with
+            <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.kernel_metrics.html#sklearn.metrics.pairwise.kernel_metrics">
+            scikit-learn kernel</a>, e.g., "rbf", "polynomial", "laplacian", "linear", ...
+
+        kernel_params : dict, default to None
+            Parameters of the kernel (degree for polynomial kernel, gamma for RBF).
+            Naming has to be compliant with scikit-learn, e.g., {"gamma": 0.0005}.
+
+        n_components : int or dict, default to None
+            Number of components for kernel PCA.
+            <br/> If int, then indicates the same number of components for source and target.
+            <br/> If dict, then must be of the form {'source':int, 'target':int}.
+
+        n_pv : int, default to None
+            Number of principal vectors.
+
+        n_jobs : int, default to 1
+            Number of concurrent threads to use for tasks that can be parallelized.
+        """
 
         self.gamma_coef = None
         self.alpha_coef = None
@@ -58,7 +86,8 @@ class PVComputation:
             }
         self.n_pv = n_pv
 
-        self.n_jobs = 1
+        self.n_jobs = n_jobs
+
 
     def fit(self, source_data, target_data, method='two-stage', n_components=None, n_pv=None):
         """
@@ -74,14 +103,20 @@ class PVComputation:
 
         method: str, default to "two-stage"
             Method used for computed the kernel PVs, either "two-stage" (first kernel PCA, then
-            alignment), or "direct" (direct minimization)
+            alignment), or "direct" (direct minimization).
+            <br/>
+            <b>NOT IMPLEMENTED:</b> The one-shot computation of the PVs has not been implemented.
 
         n_components: int, default to None
             Number of components taken into the decomposition.
 
+        n_pv: int, default to None
+            Number of Principal Vectors. If not set here or in __init__, then maximum number of PV will be computed.
+
         Returned Values
         -------
-        self: returns an instance of self.
+        self : PVComputation
+            Fitted instance.
         """
 
         # Compute kernel matrices
@@ -132,12 +167,17 @@ class PVComputation:
 
         method: str, default to "two-stage"
             Method used for computed the kernel PVs, either "two-stage" (first kernel PCA, then
-            alignment), or "direct" (direct minimization)
+            alignment), or "direct" (direct minimization).
+            <br/>
+            <b>NOT IMPLEMENTED:</b> The one-shot computation of the PVs has not been implemented.
 
         n_components: int or dictionary, default to None
             Number of components taken into account for PCA. Can be int (if same number of components
             for source or target) or dictionary with {'source': int, 'target':int} indicating the
             number of source and target principal components.
+
+        n_pv: int, default to None
+            Number of Principal Vectors. If not set here or in __init__, then maximum number of PV will be computed.
 
         Returned Values
         -------
@@ -214,23 +254,8 @@ class PVComputation:
 
 
     def _direct_computation(self, n_components=None):
-        print('BEWARE')
-        print('DIRECT COMPUTATION HAS NOT BEEN CORRECTED')
-        print('AND COME WITH SUBTANTIAL COMPUTATION PROBLEM')
-        print('DO NOT USE AS SUCH')
-        self.n_components = n_components or min(self.kernel_values_.source_data.shape[0], self.kernel_values_.target_data.shape[0])
+        raise NotImplementedError('Direct computation of PVs has not been implemented.')
 
-        # Compute kernel cosine similarity
-        self.kernel_cosine_similarity_ = np.linalg.pinv(_sqrt_matrix(self.kernel_values_.k_s)).dot(self.kernel_values_.k_st).dot(np.linalg.pinv(_sqrt_matrix(self.kernel_values_.k_t)))
-
-        sigma_s, theta, sigma_t = np.linalg.svd(self.kernel_cosine_similarity_)
-        sigma_t = sigma_t.T
-        self.gamma_coef = {}
-        self.gamma_coef['source'] = np.linalg.inv(_sqrt_matrix(self.kernel_values_.k_s)).dot(sigma_s[:,:self.n_components]).T
-        self.gamma_coef['target'] = np.linalg.inv(_sqrt_matrix(self.kernel_values_.k_t)).dot(sigma_t[:,:self.n_components]).T
-
-        # Canonical angles
-        self.canonical_angles = theta
 
     def _project_PV_from_data(self, X, t, right_center=False):
         """
