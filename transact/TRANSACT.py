@@ -312,7 +312,7 @@ class TRANSACT:
         -------
         """
         self.alpha_values = alpha_values if alpha_values is not None else np.logspace(-10,5,34)
-        self.l1_ratio_values = [0.2, 0.4, 0.5, 0.6, 0.8, 0.9, 1.]
+        self.l1_ratio_values = [0., .1, .2, .4, .5, .6, .8, .9, 1.]
         param_grid ={
             'regression__alpha': self.alpha_values,
             'regression__l1_ratio': self.l1_ratio_values
@@ -320,7 +320,6 @@ class TRANSACT:
 
         #Grid search setup
         self.predictive_clf = GridSearchCV(Pipeline([
-                                ('scaler', StandardScaler(with_mean=True, with_std=False)),
                                 ('regression', ElasticNet())
                                 ]),\
                                 cv=10,
@@ -403,7 +402,7 @@ class TRANSACT:
         np.ndarray of shape (n_samples, n_pv), dtype=float
             Dataset projected on consensus features.
         """
-        return self.interpolation_.transform(X, self.optimal_time, center)
+        return self.interpolation_.transform(X, self.optimal_time, center=center)
 
 
     def _compute_optimal_time(self, step=100, left_center=True):
