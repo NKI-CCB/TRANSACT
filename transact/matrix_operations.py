@@ -1,13 +1,15 @@
-""" Matrix Operations
+""" <h3>Matrix Operations</h3>
+Linear algebra routines used in the different packages.
 
 @author: Soufiane Mourragui
+
 
 Example
 -------
     
 Notes
 -------
-BEWARE : _center_kernel is set to n_s instead of n_s - 1. Might be problematic.
+
 
 References
 -------
@@ -17,9 +19,9 @@ References
 import numpy as np
 
 def _sqrt_matrix(m):
-        s,u = np.linalg.eigh(m)
-        # Clip at 0 to avoid negative value
-        return u.dot(np.diag(np.sqrt(s.clip(0)))).dot(u.T)
+    s,u = np.linalg.eigh(m)
+    # Clip at 0 to avoid negative value
+    return u.dot(np.diag(np.sqrt(s.clip(0)))).dot(u.T)
 
 
 def _center_kernel(k):

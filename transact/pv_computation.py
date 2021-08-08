@@ -1,8 +1,6 @@
-""" PVComputation: non-linear dimensionality reduction by kernel PCA and alignment of resulting kernel PCs.
+""" <h3>PVComputation</h3>: Non-linear dimensionality reduction by kernel PCA and alignment of resulting kernel PCs.
 
 @author: Soufiane Mourragui
-
-This
 
 
 Example
@@ -10,9 +8,44 @@ Example
     
 Notes
 -------
+    ::
+    import numpy as np
+    from transact.PVComputation import PVComputation
+
+    # Generate data
+    n_source = 100
+    n_target = 200
+    n_features = 500
+
+    X_source = np.random.normal(size=(n_source, n_features))
+    y_source = X_source.dot(np.random.normal(size=(n_features)))
+    X_target = np.random.normal(size=(n_target, n_features))
+
+
+    # Create a TRANSACT instance
+    principal_vectors = PVComputation(
+        kernel='rbf',
+        kernel_params={'gamma':1/np.sqrt(n_features)},
+        n_components={'source': 20, 'target':40},
+        n_jobs=1,
+        verbose=1
+    )
+
+    # Compute consensus features
+    clf.fit(
+        X_source,
+        X_target,
+        n_pv=10,
+        step=100,
+        with_interpolation=True
+    )
+    ::
 
 References
 -------
+[1] Golub and van Loan, Matrix Computations, 2013.
+[2] Mourragui et al 2021, Predicting clinical drug response from model systems by non-linear subspace-based transfer
+learning, Biorxiv.
 
 """
 

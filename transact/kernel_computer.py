@@ -1,9 +1,12 @@
-""" Interpolation
+""" <h3>KernelComputer</h3>
+Routine for computing the different kernel (or similarity) matrices in the TRANSACT operations,
+i.e. for Kernel PCA and the comparison of directions.
 
 @author: Soufiane Mourragui
 
 Example
 -------
+
     
 Notes
 -------

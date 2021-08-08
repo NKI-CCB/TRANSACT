@@ -1,5 +1,5 @@
-""" <h1> <b>TRANSACT</b>: <b>T</b>umor <b>R</b>esponse <b>A</b>ssessment by <b>N</b>on-linear <b>S</b>ubspace
-<b>A</b>lignment of <b>C</b>ell-lines and <b>T</b>umors </h1>
+""" <h3> <b>TRANSACT</b></h3>: <b>T</b>umor <b>R</b>esponse <b>A</b>ssessment by <b>N</b>on-linear <b>S</b>ubspace
+<b>A</b>lignment of <b>C</b>ell-lines and <b>T</b>umors.
 
 @author: Soufiane Mourragui <soufiane.mourragui@gmail.com>
 
