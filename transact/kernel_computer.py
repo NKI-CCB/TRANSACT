@@ -1,4 +1,4 @@
-""" Interpolation
+""" Kernel Computer
 
 @author: Soufiane Mourragui
 
@@ -22,14 +22,19 @@ from sklearn.decomposition import KernelPCA
 from sklearn.metrics.pairwise import pairwise_kernels, kernel_metrics
 
 from transact.matrix_operations import _sqrt_matrix, _center_kernel, _right_center_kernel
+from transact.alternative_kernels import mallow_kernel_wrapper
 
 
 class KernelComputer():
 
-    def __init__(self, kernel, kernel_params={}):
+    def __init__(self, kernel, kernel_params={}, n_jobs=1):
 
         self.kernel = kernel
-        self.kernel_ = kernel_metrics()[kernel]
+        self.n_jobs = n_jobs
+        if self.kernel == 'mallow':
+            self.kernel_ = mallow_kernel_wrapper(self.n_jobs)
+        else:
+            self.kernel_ = kernel_metrics()[kernel]
         self.kernel_params_ = kernel_params
         self._source_data = None
         self._target_data = None

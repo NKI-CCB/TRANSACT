@@ -29,14 +29,13 @@ from transact.kernel_computer import KernelComputer
 
 class Interpolation:
 
-    def __init__(self, kernel, kernel_params={}):
+    def __init__(self, kernel, kernel_params={}, n_jobs=1):
 
         self.kernel = kernel
-        self.kernel_ = kernel_metrics()[kernel]
         self.kernel_params_ = kernel_params
 
         self._principal_vectors = None
-        self.kernel_values_ = KernelComputer(self.kernel, self.kernel_params_)
+        self.kernel_values_ = None
 
     def fit(self,
             principal_vectors,

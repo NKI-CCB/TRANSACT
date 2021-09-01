@@ -28,6 +28,7 @@ from sklearn.linear_model import Ridge, ElasticNet
 
 from transact.matrix_operations import _sqrt_matrix, _center_kernel, _right_center_kernel, _left_center_kernel
 from transact.kernel_computer import KernelComputer
+from transact.alternative_kernels import mallow_kernel_wrapper
 
 
 class PVComputation:
@@ -73,10 +74,9 @@ class PVComputation:
         self.canonical_angles = None
 
         self.kernel = kernel
-        self.kernel_ = kernel_metrics()[kernel]
         self.kernel_params_ = kernel_params
 
-        self.kernel_values_ = KernelComputer(self.kernel, self.kernel_params_)
+        self.kernel_values_ = KernelComputer(self.kernel, self.kernel_params_, n_jobs)
 
         # Put n_components in dictionary format.
         self.n_components = n_components
@@ -226,10 +226,13 @@ class PVComputation:
         for t in ['source', 'target']:
             # Reduce dimensionality using kernelPCA.
             self.dim_reduc_clf_[t] = KernelPCA(self.n_components[t],
-                                            kernel=self.kernel,
+                                            kernel='precomputed' if self.kernel == 'mallow' else self.kernel,
                                             n_jobs=self.n_jobs,
                                             **self.kernel_params_)
-            self.dim_reduc_clf_[t].fit(self.kernel_values_.data[t])
+            if self.kernel == 'mallow':
+                self.dim_reduc_clf_[t].fit(self.kernel_values_.kernel_submatrices[t])
+            else:
+                self.dim_reduc_clf_[t].fit(self.kernel_values_.data[t])
 
             # Save kernel PCA coefficients
             self.alpha_coef[t] = self.dim_reduc_clf_[t].alphas_ / np.sqrt(self.dim_reduc_clf_[t].lambdas_)

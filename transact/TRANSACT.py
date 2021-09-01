@@ -134,7 +134,7 @@ class TRANSACT:
 
         self.kernel = kernel
         self.kernel_params_ = kernel_params or {}
-        self.kernel_values_ = KernelComputer(self.kernel, self.kernel_params_)
+        self.kernel_values_ = KernelComputer(self.kernel, self.kernel_params_, n_jobs)
 
         self.source_data_ = None
         self.target_data_ = None
@@ -224,7 +224,7 @@ class TRANSACT:
         self.kernel_values_.fit(source_data, target_data, center=False)
 
         # Compute principal vectors
-        self.principal_vectors_ = PVComputation(self.kernel, self.kernel_params_)
+        self.principal_vectors_ = PVComputation(self.kernel, self.kernel_params_, n_jobs=self.n_jobs)
         self.principal_vectors_.fit(self.source_data_,
                                     self.target_data_,
                                     method=self.method,
@@ -236,7 +236,7 @@ class TRANSACT:
             return self
 
         # Set up interpolation scheme
-        self.interpolation_ = Interpolation(self.kernel, self.kernel_params_)
+        self.interpolation_ = Interpolation(self.kernel, self.kernel_params_, self.n_jobs)
         self.interpolation_.fit(self.principal_vectors_, self.kernel_values_)
 
         # Compute optimal interpolation time
