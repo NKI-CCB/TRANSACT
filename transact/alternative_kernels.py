@@ -60,6 +60,6 @@ def mallow_kernel_wrapper(n_jobs=1):
         return np.array(Parallel(n_jobs=n_jobs, verbose=1)(
             delayed(compute_number_discordant_row)(gamma, x, f)
             for f in y
-        ))
+        )).T
 
     return mallow_kernel

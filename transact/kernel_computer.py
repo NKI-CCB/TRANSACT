@@ -69,7 +69,7 @@ class KernelComputer():
         elif right_center:
             K_with_source = _right_center_kernel(K_with_source)
             K_with_target = _right_center_kernel(K_with_target)
-            
+        
         return np.concatenate([K_with_source, K_with_target], axis=1)
 
 
