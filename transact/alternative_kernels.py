@@ -48,7 +48,6 @@ def compute_number_discordant_row(gamma,X,y):
 def mallow_kernel_wrapper(n_jobs=1):
 
     def mallow_kernel(x, y=None, gamma=None):
-        print('START MALLOW COMPUTATION')
         x = np.asarray(x)
         x = x.reshape(1 if len(x.shape) == 1 else x.shape[0],-1)
         if y is None:

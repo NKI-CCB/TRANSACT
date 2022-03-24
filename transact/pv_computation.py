@@ -30,7 +30,6 @@ from transact.matrix_operations import _sqrt_matrix, _center_kernel, _right_cent
 from transact.kernel_computer import KernelComputer
 from transact.alternative_kernels import mallow_kernel_wrapper
 
-
 class PVComputation:
     """
     PVComputation handles the dimensionality reduction and alignment of learned manifold.
@@ -225,17 +224,22 @@ class PVComputation:
         # Independent processing of source and target
         for t in ['source', 'target']:
             # Reduce dimensionality using kernelPCA.
-            self.dim_reduc_clf_[t] = KernelPCA(self.n_components[t],
-                                            kernel='precomputed' if self.kernel == 'mallow' else self.kernel,
-                                            n_jobs=self.n_jobs,
-                                            **self.kernel_params_)
+            self.dim_reduc_clf_[t] = KernelPCA(
+              self.n_components[t],
+              eigen_solver='dense',
+              tol=1e-9,
+              max_iter=1000,
+              kernel='precomputed' if self.kernel == 'mallow' else self.kernel,
+              n_jobs=self.n_jobs,
+              **self.kernel_params_
+            )
             if self.kernel == 'mallow':
                 self.dim_reduc_clf_[t].fit(self.kernel_values_.kernel_submatrices[t])
             else:
                 self.dim_reduc_clf_[t].fit(self.kernel_values_.data[t])
 
             # Save kernel PCA coefficients
-            self.alpha_coef[t] = self.dim_reduc_clf_[t].alphas_ / np.sqrt(self.dim_reduc_clf_[t].lambdas_)
+            self.alpha_coef[t] = self.dim_reduc_clf_[t].eigenvectors_ / np.sqrt(self.dim_reduc_clf_[t].eigenvalues_)
 
 
     def _align_principal_components(self):
