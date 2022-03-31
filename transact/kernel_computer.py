@@ -29,7 +29,7 @@ class KernelComputer():
 
     def __init__(self, kernel, kernel_params={}, n_jobs=1):
 
-        self.kernel = kernel
+        self.kernel_ = kernel
         self.n_jobs = n_jobs
         if self.kernel == 'mallow':
             self.kernel_ = mallow_kernel_wrapper(self.n_jobs)
