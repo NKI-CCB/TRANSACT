@@ -64,6 +64,7 @@ learning, Biorxiv.
 import numpy as np
 import scipy
 from joblib import Parallel, delayed
+import logging
 
 from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.linear_model import Ridge, ElasticNet, Lasso, LinearRegression
@@ -221,21 +222,26 @@ class TRANSACT:
         self.left_center = left_center
 
         # Compute kernel values
+        logging.info.('START COMPUTATION OF KERNEL MATRICES')
         self.kernel_values_.fit(source_data, target_data, center=False)
 
         # Compute principal vectors
         self.principal_vectors_ = PVComputation(self.kernel, self.kernel_params_, n_jobs=self.n_jobs)
-        self.principal_vectors_.fit(self.source_data_,
-                                    self.target_data_,
-                                    method=self.method,
-                                    n_components=self.n_components,
-                                    n_pv=self.n_pv)
+        self.principal_vectors_.fit(
+            self.source_data_,
+            self.target_data_,
+            method=self.method,
+            n_components=self.n_components,
+            n_pv=self.n_pv
+        )
 
         # Stop here if interpolation should not be computed.
         if not with_interpolation:
+            logging.info.('FINISHED TRANSACT ALIGNMENT WITHOUT INTERPOLATION')
             return self
 
         # Set up interpolation scheme
+        logging.info.('START INTERPOLATION')
         self.interpolation_ = Interpolation(self.kernel, self.kernel_params_, self.n_jobs)
         self.interpolation_.fit(self.principal_vectors_, self.kernel_values_)
 
@@ -244,6 +250,7 @@ class TRANSACT:
 
         self.is_fitted = True
 
+        logging.info.('FINISHED TRANSACT ALIGNMENT WITH INTERPOLATION')
         return self
 
 

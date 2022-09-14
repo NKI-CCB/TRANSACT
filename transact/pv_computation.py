@@ -20,6 +20,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import logging
 from sklearn.metrics.pairwise import kernel_metrics
 from sklearn.decomposition import KernelPCA
 from sklearn.metrics.pairwise import kernel_metrics
@@ -223,6 +224,7 @@ class PVComputation:
 
         # Independent processing of source and target
         for t in ['source', 'target']:
+            logging.info('START COMPUTATION OF KERNEL PCA FOR %s'%(t.upper()))
             # Reduce dimensionality using kernelPCA.
             self.dim_reduc_clf_[t] = KernelPCA(
               self.n_components[t],
@@ -243,6 +245,7 @@ class PVComputation:
 
 
     def _align_principal_components(self):
+        logging.info('START COMPUTATION PRINCIPAL VECTORS')
         self.cosine_similarity_ = self.alpha_coef['source'].T.dot(self.kernel_values_.k_st).dot(self.alpha_coef['target'])
         
         beta_s, theta, beta_t = np.linalg.svd(self.cosine_similarity_)

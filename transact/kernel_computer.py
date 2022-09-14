@@ -31,7 +31,7 @@ class KernelComputer():
 
         self.kernel_ = kernel
         self.n_jobs = n_jobs
-        if self.kernel == 'mallow':
+        if self.kernel_ == 'mallow':
             self.kernel_ = mallow_kernel_wrapper(self.n_jobs)
         else:
             self.kernel_ = kernel_metrics()[kernel]

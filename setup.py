@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="transact_dr",
-    version="1.0.1",
+    version="1.1.1",
     author="Soufiane Mourragui <soufiane.mourragui@gmail.com>, ",
     author_email="soufiane.mourragui@gmail.com",
     description="TRANSACT",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/NKI-CCB/TRANSACT",
     packages=setuptools.find_packages(),
-    install_requires=['numpy', 'scipy', 'pandas', 'matplotlib', 'scikit-learn'],
+    install_requires=['numpy', 'scipy', 'pandas', 'matplotlib', 'scikit-learn', 'logging'],
     python_requires='>=3.6',
     classifiers=(
         "Programming Language :: Python :: 3",
