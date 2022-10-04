@@ -222,7 +222,7 @@ class TRANSACT:
         self.left_center = left_center
 
         # Compute kernel values
-        logging.info.('START COMPUTATION OF KERNEL MATRICES')
+        logging.info('START COMPUTATION OF KERNEL MATRICES')
         self.kernel_values_.fit(source_data, target_data, center=False)
 
         # Compute principal vectors
@@ -237,11 +237,11 @@ class TRANSACT:
 
         # Stop here if interpolation should not be computed.
         if not with_interpolation:
-            logging.info.('FINISHED TRANSACT ALIGNMENT WITHOUT INTERPOLATION')
+            logging.info('FINISHED TRANSACT ALIGNMENT WITHOUT INTERPOLATION')
             return self
 
         # Set up interpolation scheme
-        logging.info.('START INTERPOLATION')
+        logging.info('START INTERPOLATION')
         self.interpolation_ = Interpolation(self.kernel, self.kernel_params_, self.n_jobs)
         self.interpolation_.fit(self.principal_vectors_, self.kernel_values_)
 
@@ -250,7 +250,7 @@ class TRANSACT:
 
         self.is_fitted = True
 
-        logging.info.('FINISHED TRANSACT ALIGNMENT WITH INTERPOLATION')
+        logging.info('FINISHED TRANSACT ALIGNMENT WITH INTERPOLATION')
         return self
 
 
