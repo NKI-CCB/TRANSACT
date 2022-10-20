@@ -12,6 +12,7 @@ pre-print</a>.
 Example
 -------
     ::
+    import scipy
     import numpy as np
     from transact.TRANSACT import TRANSACT
 
@@ -19,17 +20,29 @@ Example
     n_source = 100
     n_target = 200
     n_features = 500
+    n_latent = 100
+    n_common = 20
 
-    X_source = np.random.normal(size=(n_source, n_features))
-    y_source = X_source.dot(np.random.normal(size=(n_features)))
-    X_target = np.random.normal(size=(n_target, n_features))
+    # Generate some common and individual directions by sampling from orthogonal group
+    all_directions = scipy.stats.ortho_group.rvs(n_features)
+    common_directions = all_directions[:n_common]
+    source_specific_directions = all_directions[n_common:n_latent]
+    target_specific_directions = all_directions[n_latent:2*n_latent-n_common]
+
+    # Joint
+    X_source = np.random.normal(size=(n_source, n_common)).dot(common_directions)
+    X_target = np.random.normal(size=(n_target, n_common)).dot(common_directions)
+
+    # Individual
+    X_source = X_source + np.random.normal(size=(n_source, n_latent-n_common)).dot(source_specific_directions)
+    X_target = X_target + np.random.normal(size=(n_target, n_latent-n_common)).dot(target_specific_directions)
 
 
     # Create a TRANSACT instance
     clf = TRANSACT(
-        kernel='rbf',
-        kernel_params={'gamma':1/np.sqrt(n_features)},
-        n_components={'source': 20, 'target':40},
+        kernel='linear',
+        kernel_params=None,
+        n_components={'source': n_latent-1, 'target':n_latent-1},
         n_jobs=1,
         verbose=1
     )
@@ -38,10 +51,25 @@ Example
     clf.fit(
         X_source,
         X_target,
-        n_pv=10,
+        n_pv=n_common+10,
         step=100,
         with_interpolation=True
     )
+
+    # Cosine similarity plotting
+    sns.heatmap(
+        clf.principal_vectors_.cosine_similarity_[:n_common+10,:n_common+10],
+        cmap='seismic_r', vmin=-1, vmax=1, center=0
+    )
+
+    # Cosine similarity plotting
+    sns.heatmap(
+        clf.principal_vectors_.cosine_similarity_[:n_common+10,:n_common+10],
+        cmap='seismic_r', vmin=-1, vmax=1, center=0
+    )
+
+    # Principal vectors similarity plotting
+    plt.plot(np.cos(clf.principal_vectors_.canonical_angles))
     ::
     
 Notes
