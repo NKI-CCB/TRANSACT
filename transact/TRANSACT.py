@@ -390,7 +390,7 @@ class TRANSACT:
         X_projected = self.transform(X)
 
         if self.predictive_clf is None:
-            print('BEWARE: NOT FITTED INSTANCE')
+            logging.warning('BEWARE: NOT FITTED INSTANCE')
             self.fit_predictor(X,y)
         clf = clone(self.predictive_clf)
 
