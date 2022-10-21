@@ -354,14 +354,16 @@ class TRANSACT:
         }
 
         #Grid search setup
-        self.predictive_clf = GridSearchCV(Pipeline([
-                                ('regression', ElasticNet())
-                                ]),\
-                                cv=10,
-                                n_jobs=self.n_jobs,
-                                param_grid=param_grid,
-                                verbose=self.verbose,
-                                scoring='neg_mean_squared_error')
+        self.predictive_clf = GridSearchCV(
+            Pipeline([
+                ('regression', ElasticNet())
+            ]),
+            cv=10,
+            n_jobs=self.n_jobs,
+            param_grid=param_grid,
+            verbose=self.verbose,
+            scoring='neg_mean_squared_error'
+        )
         self.predictive_clf.fit(self.transform(X, center=False), y)
 
         return self

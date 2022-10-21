@@ -45,6 +45,21 @@ def compute_number_discordant_row(gamma,X,y):
     ]
 
 
+def kendall_kernel_wrapper(n_jobs=1):
+
+    def row_wise_kernel(x,y):
+        return [scipy.stats.kendalltau(x,y_val)[0] for y_val in y]
+
+    def kendall_kernel(X, y=None):
+        if y is None:
+            y = X
+
+        return np.array(Parallel(n_jobs=n_jobs, verbose=1)(
+            delayed(row_wise_kernel)(x,y) for x in X
+        ))
+
+    return kendall_kernel
+
 def mallow_kernel_wrapper(n_jobs=1):
 
     def mallow_kernel(x, y=None, gamma=None):
