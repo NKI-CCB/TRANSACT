@@ -20,6 +20,8 @@ import numpy as np
 import scipy
 import scipy.stats
 from joblib import Parallel, delayed
+import tqdm
+
 
 def compute_number_discordant(x,y):
     x = np.asarray(x).ravel()
@@ -77,3 +79,82 @@ def mallow_kernel_wrapper(n_jobs=1):
         )).T
 
     return mallow_kernel
+
+def spearman_kernel(X, y=None):
+    """
+    Linear kernel between ranks of X and y.
+    """
+    p = X.shape[1]
+
+    if len(X.shape) == 1:
+        X = X.reshape(1,-1)
+    X_ranks = np.argsort(X, axis=1)
+    
+    if y is None:
+        y_ranks = X_ranks
+    else:
+        if len(y.shape) == 1:
+            y = y.shape(-1,1)
+        y_ranks = np.argsort(y, axis=1)
+        
+    return X_ranks.dot(y_ranks.T) / np.var(np.arange(p))
+
+
+def random_spearman_kernel(X,y=None, n_iter=50, left_random=True, right_random=True):
+    """
+    Return expectation of Spearman correlation when Gaussian model is added
+    to X and y. Standard deviation of Gaussian model is based on 10% of the
+    minimum difference observed in X.
+
+    Parameters
+    ----------
+    X : np.ndarray
+        Array to study, with samples in the rows.
+    y: np.ndarray
+        Second array to compute kernel agains, default to None. If one wants
+        to compute the kernel of X with itself, please set y=None (speeds up
+        computation).
+    n_iter: int, default to 50
+        Number of Monte-Carlo samplings.
+    left_random: bool, default to True
+        Whether random noise must be added to X.
+    right_random: bool, default to True
+        Whether random noise must be added to Y.
+
+    Returns
+    -------
+    np.ndarray with kernel values
+    """
+    if y is None:
+        y = X
+
+    if left_random:
+        min_diff_X = np.unique(X)
+        min_diff_X = np.min(min_diff_X[1:] - min_diff_X[:-1])
+        sigma_X = min_diff_X / 10.
+    else:
+        sigma_X = 0.
+
+    if right_random:
+        min_diff_Y = np.unique(y)
+        min_diff_Y = np.min(min_diff_Y[1:] - min_diff_Y[:-1])
+        sigma_Y = min_diff_Y / 10.
+    else:
+        sigma_Y = 0.
+    
+    kernel_matrix = np.mean([
+        spearman_kernel(
+            X + np.random.normal(0,sigma_X, X.shape),
+            y + np.random.normal(0,sigma_Y, y.shape)
+        )
+        for _ in tqdm.tqdm(range(n_iter))
+    ], axis=0)
+
+    return kernel_matrix
+
+def random_spearman_kernel_wrapper(n_iter):
+
+    def kernel(X, y=None):
+        return random_spearman_kernel(X,y,n_iter)
+
+    return kernel

@@ -22,7 +22,7 @@ from sklearn.decomposition import KernelPCA
 from sklearn.metrics.pairwise import pairwise_kernels, kernel_metrics
 
 from transact.matrix_operations import _sqrt_matrix, _center_kernel, _right_center_kernel
-from transact.alternative_kernels import mallow_kernel_wrapper, kendall_kernel_wrapper
+from transact.alternative_kernels import mallow_kernel_wrapper, kendall_kernel_wrapper, random_spearman_kernel, spearman_kernel
 
 
 class KernelComputer():
@@ -31,10 +31,14 @@ class KernelComputer():
 
         self.kernel_ = kernel
         self.n_jobs = n_jobs
-        if self.kernel_ == 'mallow':
+        if self.kernel_.lower() == 'mallow':
             self.kernel_ = mallow_kernel_wrapper(self.n_jobs)
-        elif self.kernel_ == 'kendall':
+        elif self.kernel_.lower() == 'kendall':
             self.kernel_ = kendall_kernel_wrapper(self.n_jobs)
+        elif self.kernel_.lower() == 'spearman':
+            self.kernel_ = spearman_kernel
+        elif self.kernel_.lower() == 'random_spearman':
+            self.kernel_ = random_spearman_kernel
         else:
             self.kernel_ = kernel_metrics()[kernel]
         self.kernel_params_ = kernel_params

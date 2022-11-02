@@ -135,10 +135,11 @@ class TRANSACT:
             Name of the kernel to be used in the algorithm. Has to be compliant with
             <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.kernel_metrics.html#sklearn.metrics.pairwise.kernel_metrics">
             scikit-learn kernel</a>, e.g., "rbf", "polynomial", "laplacian", "linear", ...
+            Other kernels are also available: 'mallow', 'kendall', 'spearman', 'random_spearman' (see alternative_kernels.py for more details).
 
         kernel_params : dict, default to None
             Parameters of the kernel (degree for polynomial kernel, gamma for RBF).
-            Naming has to be compliant with scikit-learn, e.g., {"gamma": 0.0005}.
+            Naming has to be compliant with scikit-learn, e.g., {'gamma': 0.0005}
 
         n_components : int or dict, default to None
             Number of components for kernel PCA.

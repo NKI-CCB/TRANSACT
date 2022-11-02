@@ -231,11 +231,11 @@ class PVComputation:
               eigen_solver='dense',
               tol=1e-9,
               max_iter=1000,
-              kernel='precomputed' if self.kernel in ['mallow', 'kendall'] else self.kernel,
+              kernel='precomputed' if self.kernel in ['mallow', 'kendall', 'spearman', 'random_spearman'] else self.kernel,
               n_jobs=self.n_jobs,
-              **self.kernel_params_
+              **(self.kernel_params_ if self.kernel not in ['mallow', 'kendall', 'spearman', 'random_spearman'] else {})
             )
-            if self.kernel in ['mallow', 'kendall']:
+            if self.kernel in ['mallow', 'kendall', 'spearman', 'random_spearman']:
                 self.dim_reduc_clf_[t].fit(self.kernel_values_.kernel_submatrices[t])
             else:
                 self.dim_reduc_clf_[t].fit(self.kernel_values_.data[t])
