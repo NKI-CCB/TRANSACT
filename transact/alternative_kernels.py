@@ -88,19 +88,19 @@ def spearman_kernel(X, y=None):
 
     if len(X.shape) == 1:
         X = X.reshape(1,-1)
-    X_ranks = np.argsort(X, axis=1)
+    X_ranks = scipy.stats.rankdata(X, axis=1, method='ordinal') - 1
     
     if y is None:
         y_ranks = X_ranks
     else:
         if len(y.shape) == 1:
             y = y.shape(-1,1)
-        y_ranks = np.argsort(y, axis=1)
+        y_ranks = scipy.stats.rankdata(y, axis=1, method='ordinal') - 1
         
     return X_ranks.dot(y_ranks.T) / np.var(np.arange(p))
 
 
-def random_spearman_kernel(X,y=None, n_iter=50, left_random=True, right_random=True):
+def random_spearman_kernel(X,y=None, n_iter=250, left_random=True, right_random=True, n_jobs=1):
     """
     Return expectation of Spearman correlation when Gaussian model is added
     to X and y. Standard deviation of Gaussian model is based on 10% of the
@@ -142,13 +142,13 @@ def random_spearman_kernel(X,y=None, n_iter=50, left_random=True, right_random=T
     else:
         sigma_Y = 0.
     
-    kernel_matrix = np.mean([
-        spearman_kernel(
+    kernel_matrix = np.mean(Parallel(n_jobs)(
+        delayed(spearman_kernel)(
             X + np.random.normal(0,sigma_X, X.shape),
             y + np.random.normal(0,sigma_Y, y.shape)
         )
         for _ in tqdm.tqdm(range(n_iter))
-    ], axis=0)
+    ), axis=0)
 
     return kernel_matrix
 
