@@ -88,14 +88,14 @@ def spearman_kernel(X, y=None):
 
     if len(X.shape) == 1:
         X = X.reshape(1,-1)
-    X_ranks = scipy.stats.rankdata(X, axis=1, method='ordinal') - 1
+    X_ranks = scipy.stats.rankdata(X, axis=1, method='ordinal').astype(np.float64) - 1.
     
     if y is None:
         y_ranks = X_ranks
     else:
         if len(y.shape) == 1:
             y = y.shape(-1,1)
-        y_ranks = scipy.stats.rankdata(y, axis=1, method='ordinal') - 1
+        y_ranks = scipy.stats.rankdata(y, axis=1, method='ordinal').astype(np.float64) - 1
         
     return X_ranks.dot(y_ranks.T) / np.var(np.arange(p))
 
@@ -121,11 +121,11 @@ def single_loop_random_spearman_kernel(X,y=None, n_iter=250, left_random=True, r
         X + np.random.normal(0,sigma_X, X.shape),
         y + np.random.normal(0,sigma_Y, y.shape)
     )
-    for _ in range(n_iter-1):
+    for _ in tqdm.tqdm(range(n_iter-1)):
         kernel_matrix = kernel_matrix + spearman_kernel(
-        X + np.random.normal(0,sigma_X, X.shape),
-        y + np.random.normal(0,sigma_Y, y.shape)
-    )
+            X + np.random.normal(0,sigma_X, X.shape),
+            y + np.random.normal(0,sigma_Y, y.shape)
+        )
 
     return kernel_matrix
 
@@ -159,9 +159,9 @@ def random_spearman_kernel(X,y=None, n_iter=250, left_random=True, right_random=
     iter_breakdown = np.linspace(0,n_iter,n_jobs+1).astype(int)
     iter_breakdown = iter_breakdown[1:] - iter_breakdown[:-1]
     kernel_matrix = np.sum(
-        Parallel(n_jobs=n_jobs, verbose=1, require='sharedmem')(
+        Parallel(n_jobs=n_jobs, verbose=10, require='sharedmem')(
             delayed(single_loop_random_spearman_kernel)(X,y, it, left_random, right_random, n_jobs)
-            for it in tqdm.tqdm(iter_breakdown)
+            for it in iter_breakdown
             ), 
         axis=0
     )
