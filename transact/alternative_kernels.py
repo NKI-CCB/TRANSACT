@@ -117,18 +117,11 @@ def single_loop_random_spearman_kernel(X,y=None, n_iter=250, left_random=True, r
     else:
         sigma_Y = 0.
     
-    # kernel_matrix = np.mean(Parallel(n_jobs)(
-    #     delayed(spearman_kernel)(
-    #         X + np.random.normal(0,sigma_X, X.shape),
-    #         y + np.random.normal(0,sigma_Y, y.shape)
-    #     )
-    #     for _ in tqdm.tqdm(range(n_iter))
-    # ), axis=0)
     kernel_matrix = spearman_kernel(
         X + np.random.normal(0,sigma_X, X.shape),
         y + np.random.normal(0,sigma_Y, y.shape)
     )
-    for _ in tqdm.tqdm(range(n_iter-1)):
+    for _ in range(n_iter-1):
         kernel_matrix = kernel_matrix + spearman_kernel(
         X + np.random.normal(0,sigma_X, X.shape),
         y + np.random.normal(0,sigma_Y, y.shape)
@@ -165,12 +158,13 @@ def random_spearman_kernel(X,y=None, n_iter=250, left_random=True, right_random=
     
     iter_breakdown = np.linspace(0,n_iter,n_jobs+1).astype(int)
     iter_breakdown = iter_breakdown[1:] - iter_breakdown[:-1]
-    print(iter_breakdown)
-    print(np.sum(iter_breakdown))
-    kernel_matrix = np.sum(Parallel(n_jobs)(
-        delayed(single_loop_random_spearman_kernel)(X,y, it, left_random, right_random, n_jobs)
-        for it in tqdm.tqdm(iter_breakdown)
-    ), axis=0)
+    kernel_matrix = np.sum(
+        Parallel(n_jobs=n_jobs, verbose=1, require='sharedmem')(
+            delayed(single_loop_random_spearman_kernel)(X,y, it, left_random, right_random, n_jobs)
+            for it in tqdm.tqdm(iter_breakdown)
+            ), 
+        axis=0
+    )
 
     return kernel_matrix / n_iter
 

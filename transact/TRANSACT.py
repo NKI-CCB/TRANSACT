@@ -313,8 +313,9 @@ class TRANSACT:
         else:
             raise NotImplementedError('%s is not a proper method for generating null distribution'%(method))
 
-        null_distribution = Parallel(n_jobs=self.n_jobs, verbose=self.verbose)\
-                                    (delayed(null_method)() for _ in range(n_iter))
+        null_distribution = Parallel(n_jobs=self.n_jobs, verbose=self.verbose)(
+            delayed(null_method)() for _ in range(n_iter)
+        )
 
         return np.array(null_distribution)
 
