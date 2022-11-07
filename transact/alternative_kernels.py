@@ -88,16 +88,17 @@ def spearman_kernel(X, y=None):
 
     if len(X.shape) == 1:
         X = X.reshape(1,-1)
-    X_ranks = scipy.stats.rankdata(X, axis=1, method='ordinal').astype(np.float64) - 1.
+    X_ranks = scipy.stats.rankdata(X, axis=1, method='ordinal').astype(np.float64) - (p+1)/2
     
     if y is None:
         y_ranks = X_ranks
     else:
         if len(y.shape) == 1:
             y = y.shape(-1,1)
-        y_ranks = scipy.stats.rankdata(y, axis=1, method='ordinal').astype(np.float64) - 1
+        y_ranks = scipy.stats.rankdata(y, axis=1, method='ordinal').astype(np.float64) - (p+1)/2
         
-    return X_ranks.dot(y_ranks.T) / np.var(np.arange(p))
+    return X_ranks.dot(y_ranks.T) / p
+
 
 def single_loop_random_spearman_kernel(X,y=None, n_iter=250, left_random=True, right_random=True, n_jobs=1):
     if y is None:
@@ -121,7 +122,7 @@ def single_loop_random_spearman_kernel(X,y=None, n_iter=250, left_random=True, r
         X + np.random.normal(0,sigma_X, X.shape),
         y + np.random.normal(0,sigma_Y, y.shape)
     )
-    for _ in tqdm.tqdm(range(n_iter-1)):
+    for _ in tqdm.tqdm(range(n_iter-1), position=0, leave=True):
         kernel_matrix = kernel_matrix + spearman_kernel(
             X + np.random.normal(0,sigma_X, X.shape),
             y + np.random.normal(0,sigma_Y, y.shape)
