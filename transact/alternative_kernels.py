@@ -101,6 +101,7 @@ def spearman_kernel(X, y=None):
 
 
 def single_loop_random_spearman_kernel(X,y=None, n_iter=250, left_random=True, right_random=True, n_jobs=1):
+    y_provided = y is not None
     if y is None:
         y = X
 
@@ -117,16 +118,15 @@ def single_loop_random_spearman_kernel(X,y=None, n_iter=250, left_random=True, r
         sigma_Y = min_diff_Y / 10.
     else:
         sigma_Y = 0.
+
+    X_rand = X + np.random.normal(0,sigma_X, X.shape)
+    y_rand = y + np.random.normal(0,sigma_Y, y.shape) if y_provided else X_rand
+    kernel_matrix = spearman_kernel(X_rand, y_rand)
     
-    kernel_matrix = spearman_kernel(
-        X + np.random.normal(0,sigma_X, X.shape),
-        y + np.random.normal(0,sigma_Y, y.shape)
-    )
     for _ in tqdm.tqdm(range(n_iter-1), position=0, leave=True):
-        kernel_matrix = kernel_matrix + spearman_kernel(
-            X + np.random.normal(0,sigma_X, X.shape),
-            y + np.random.normal(0,sigma_Y, y.shape)
-        )
+        X_rand = X + np.random.normal(0,sigma_X, X.shape)
+        y_rand = y + np.random.normal(0,sigma_Y, y.shape) if y_provided else X_rand
+        kernel_matrix = kernel_matrix + spearman_kernel(X_rand, y_rand)
 
     return kernel_matrix
 

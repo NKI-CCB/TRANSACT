@@ -81,8 +81,10 @@ class KernelComputer():
 
     def _compute_kernel(self, center=False):
         # Global kernel matrix
-        self.kernel_matrix_ = self.kernel_(np.concatenate([self._source_data, self._target_data]),
-                                            **self.kernel_params_)
+        self.kernel_matrix_ = self.kernel_(
+            np.concatenate([self._source_data, self._target_data]),
+            **self.kernel_params_
+        )
         
         # Individual kernel matrices for source, target, and cross-over.
         n_source_samples = self._source_data.shape[0]
