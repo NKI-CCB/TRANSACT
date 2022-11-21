@@ -4,7 +4,7 @@
 
 Example
 -------
-    
+
 Notes
 -------
 
@@ -61,7 +61,6 @@ class KernelComputer():
 
         return self
 
-
     def transform(self, X, center=False, right_center=False):
         """
         Returns kernel matrix with X in rows and (source, target) in columns
@@ -75,7 +74,7 @@ class KernelComputer():
         elif right_center:
             K_with_source = _right_center_kernel(K_with_source)
             K_with_target = _right_center_kernel(K_with_target)
-        
+
         return np.concatenate([K_with_source, K_with_target], axis=1)
 
 
@@ -85,7 +84,7 @@ class KernelComputer():
             np.concatenate([self._source_data, self._target_data]),
             **self.kernel_params_
         )
-        
+
         # Individual kernel matrices for source, target, and cross-over.
         n_source_samples = self._source_data.shape[0]
         self.k_s = self.kernel_matrix_[:n_source_samples,:n_source_samples]
@@ -96,7 +95,7 @@ class KernelComputer():
             self.k_s = _center_kernel(self.k_s)
             self.k_t = _center_kernel(self.k_t)
             self.k_st = _center_kernel(self.k_st)
-            
+
         self.k_ts = self.k_st.T
 
         self.kernel_submatrices = {
@@ -148,4 +147,3 @@ class KernelComputer():
     @property
     def data(self):
         return self._data
-    

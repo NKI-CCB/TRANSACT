@@ -71,7 +71,7 @@ Example
     # Principal vectors similarity plotting
     plt.plot(np.cos(clf.principal_vectors_.canonical_angles))
     ::
-    
+
 Notes
 -------
 
@@ -288,7 +288,7 @@ class TRANSACT:
         Generate a null distribution for the PV similarity function:
         <ul>
             <li> Gene shuffling: genes get shuffled in source to destroy any structure existing
-            at the gene-level while preserving the sample structure. PV get recomputed and 
+            at the gene-level while preserving the sample structure. PV get recomputed and
             similarity is saved.
         </ul>
 
@@ -424,6 +424,9 @@ class TRANSACT:
             Predicted drug response values.
         """
         return self.predictive_clf.predict(self.transform(X, center=False))
+
+    def transform_training_data(self, center=False):
+        return self.interpolation_.transform_training_data(self.optimal_time, center=center)
 
 
     def transform(self, X, center=False):

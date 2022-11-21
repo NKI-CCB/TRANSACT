@@ -4,7 +4,7 @@
 
 Example
 -------
-    
+
 Notes
 -------
 
@@ -21,7 +21,7 @@ from sklearn.metrics.pairwise import kernel_metrics
 from sklearn.decomposition import KernelPCA
 from sklearn.metrics.pairwise import pairwise_kernels, kernel_metrics
 
-from transact.matrix_operations import _sqrt_matrix, _center_kernel, centering_matrix
+from transact.matrix_operations import _sqrt_matrix, _center_kernel, centering_matrix, _left_center_kernel, _right_center_kernel
 from transact.pv_computation import PVComputation
 from transact.kernel_computer import KernelComputer
 
@@ -80,13 +80,27 @@ class Interpolation:
         else:
             return sample_coef_matrix.dot(self._angular_interpolation_matrix(tau))
 
-
-    def transform(self, X, tau, center=True):
-        
+    def transform_training_data(self, tau, center=False):
         if type(tau) == int or type(tau) == float:
             tau = [tau]*self.n_pv
         tau = np.array(tau)
+
+        K = np.block([
+            [self.kernel_values_.k_s, self.kernel_values_.k_st],
+            [self.kernel_values_.k_st.T, self.kernel_values_.k_t]
+        ])
+        if center:
+            K = _left_center_kernel(K)
+        K = _right_center_kernel(K)
         
+        return K.dot(self.coef_matrix_).dot(self._angular_interpolation_matrix(tau))
+
+    def transform(self, X, tau, center=True):
+
+        if type(tau) == int or type(tau) == float:
+            tau = [tau]*self.n_pv
+        tau = np.array(tau)
+
         K = self.kernel_values_.transform(X, center=center, right_center=True)
         return K.dot(self.coef_matrix_).dot(self._angular_interpolation_matrix(tau))
 
